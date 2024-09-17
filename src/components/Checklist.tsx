@@ -1,4 +1,5 @@
-import { FC } from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/es";
 import {
   FaEnvelope,
   FaCalendarCheck,
@@ -8,14 +9,22 @@ import {
   // FaUserGraduate,
 } from "react-icons/fa";
 import { Seminar } from "../models/studentProcess";
+import { useProcessStore } from "../store/store";
 
-interface CheckListStageProps {
-  process: Seminar;
-}
+const Checklist = () => {
+  const process = useProcessStore((state) => state.process);
+  let formattedDate = "";
+  if (process) {
+    formattedDate = process.tutor_approval_date
+      ? dayjs(process.tutor_approval_date).format("DD/MM/YYYY")
+      : "";
+  }
 
-const Checklist:FC<CheckListStageProps> = ({ process }) => {
-  
-  const { student_name: studentName, project_name: titleProject, modality_name: mode } = process;
+  const {
+    student_name: studentName,
+    project_name: titleProject,
+    modality_name: mode,
+  } = process as Seminar;
   const telegramLink = `https://t.me/+59176517816`;
   return (
     <div className="h-full bg-white rounded-lg shadow-lg p-4 m-4">
@@ -49,7 +58,7 @@ const Checklist:FC<CheckListStageProps> = ({ process }) => {
           <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
             Seminario de Grado
           </h3>
-          {process.period ? (
+          {process?.period ? (
             <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
               Inscripción {process.period}
             </time>
@@ -62,11 +71,11 @@ const Checklist:FC<CheckListStageProps> = ({ process }) => {
             <FaUserTie className="text-blue-800" />
           </span>
           <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-            Tutor: {process.tutor_name || " "}
+            Tutor: {process?.tutor_degree}. {process?.tutor_fullname || " "}
           </h3>
-          {process.tutor_approval ? (
+          {process?.tutor_approval ? (
             <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-              Aprobación del Tutor el {}
+              Aprobación del Tutor el {formattedDate}
             </time>
           ) : (
             <span>Fase de Tutor no Aprobada</span>
@@ -77,11 +86,12 @@ const Checklist:FC<CheckListStageProps> = ({ process }) => {
             <FaUserSecret className="text-blue-800" />
           </span>
           <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-            Revisor: {process.reviewer_name || " "}
+            Revisor: {process?.reviewer_degree}.{" "}
+            {process?.reviewer_fullname || " "}
           </h3>
-          {process.reviewer_approval ? (
+          {process?.reviewer_approval ? (
             <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-              Aprobación del Revisor on {}
+              Aprobación del Revisor on {formattedDate}
             </time>
           ) : (
             <span>Fase de Revisor no Aprobada</span>
