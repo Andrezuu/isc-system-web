@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Cypress tests') {
             steps {
-                sh 'yarn cypress:run'
+                sh 'xvfb-run --auto-servernum --yarn cypress:run'
             }
         }
     }
