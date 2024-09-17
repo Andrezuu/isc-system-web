@@ -14,14 +14,14 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('eslint') {
-            steps {
-                sh 'npm run lint:fix'
-            }
-        }
         stage('Build') {
             steps {
                 sh 'npm run build'
+            }
+        }
+        stage('Cypress tests') {
+            steps {
+                sh 'npx cypress run'
             }
         }
     }
