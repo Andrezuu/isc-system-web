@@ -40,8 +40,6 @@ jobs:
 
           scp -i private_key.pem -r dist/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/html
 
-          ssh -i private_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo '${{ secrets.FRONTEND_ENV }}' > /var/www/html/.env && chmod 600 /var/www/html/.env"
-
           rm private_key.pem
 
       - name: Reiniciar Apache 
@@ -51,7 +49,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            sudo chown -R www-data:www-data /var/www/html || true
             sudo systemctl restart apache2
 
       - name: Smoke test
