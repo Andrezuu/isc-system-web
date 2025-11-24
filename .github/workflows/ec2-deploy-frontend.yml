@@ -28,12 +28,12 @@ jobs:
       - name: Build del frontend
         run: npm run build 
 
-      - name: Configure SSH
+      - name: Configurar SSH
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Upload frontend files with SCP 
+      - name: Copiar archivos al servidor EC2
         run: |
           echo "${{ secrets.EC2_KEY }}" > private_key.pem
           chmod 600 private_key.pem
@@ -44,7 +44,7 @@ jobs:
 
           rm private_key.pem
 
-      - name: Reload Apache on VM
+      - name: Reiniciar Apache 
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
