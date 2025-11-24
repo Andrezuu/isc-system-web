@@ -23,7 +23,7 @@ jobs:
 
       - name: Escribir .env 
         run: |
-          echo "${{ secrets.FRONTEND_ENV }}" > .env
+          echo "VITE_API_URL=${{ secrets.FRONTEND_ENV }}" > .env
 
       - name: Build del frontend
         run: npm run build 
