@@ -13,15 +13,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Configurar node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Instalar dependencias
         run: npm install 
 
-      - name: Build frontend
+      - name: Escribir .env 
+        run: |
+          echo "${{ secrets.FRONTEND_ENV }}" > .env
+
+      - name: Build del frontend
         run: npm run build 
 
       - name: Configure SSH
@@ -47,7 +51,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            # chown target directory before reload (matches the SCP destination)
             sudo chown -R www-data:www-data /var/www/html || true
             sudo systemctl restart apache2
 
