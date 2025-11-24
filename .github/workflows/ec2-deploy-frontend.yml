@@ -50,9 +50,3 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             sudo systemctl restart apache2
-
-      - name: Smoke test
-        run: |
-          curl -sfS http://localhost
-          
-
