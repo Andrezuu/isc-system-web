@@ -54,3 +54,8 @@ jobs:
             sudo chown -R www-data:www-data /var/www/html || true
             sudo systemctl restart apache2
 
+      - name: Smoke test
+        run: |
+          curl -sfS http://localhost
+          
+
